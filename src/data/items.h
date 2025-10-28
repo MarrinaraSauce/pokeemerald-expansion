@@ -1303,11 +1303,14 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_LumioseGalette,
     },
 
-    [ITEM_SHALOUR_SABLE] =
+    [ITEM_MOTOSTOKE_CURRY] =
     {
-        .name = ITEM_NAME("Shalour Sable"),
+        .name = ITEM_NAME("Motostoke Curry"),
         .price = (I_PRICE >= GEN_7) ? 350 : 200,
-        .description = sFullHealDesc,
+        .description = COMPOUND_STRING(
+            "Loved by certain\n"
+            "Pokémon. It's from\n"
+            "the Galar region."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_STATUS_RECOVERY,
         .type = ITEM_USE_PARTY_MENU,
@@ -1323,7 +1326,10 @@ const struct Item gItemsInfo[] =
     {
         .name = ITEM_NAME("Big Malasada"),
         .price = 350,
-        .description = sFullHealDesc,
+        .description = COMPOUND_STRING(
+            "Loved by certain\n"
+            "Pokémon. It's from\n"
+            "the Alola region."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_STATUS_RECOVERY,
         .type = ITEM_USE_PARTY_MENU,
@@ -14365,7 +14371,10 @@ const struct Item gItemsInfo[] =
     {
         .name = ITEM_NAME("Jubilife Muffin"),
         .price = 250,
-        .description = sFullHealDesc,
+        .description = COMPOUND_STRING(
+            "Loved by certain\n"
+            "Pokémon. It's from\n"
+            "the Hisui region."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_STATUS_RECOVERY,
         .type = ITEM_USE_PARTY_MENU,

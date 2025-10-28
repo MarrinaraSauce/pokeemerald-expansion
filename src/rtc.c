@@ -334,7 +334,16 @@ enum TimeOfDay GetTimeOfDay(void)
 
 enum TimeOfDay GetTimeOfDayForDex(void)
 {
-    return OW_TIME_OF_DAY_ENCOUNTERS ? GetTimeOfDay() : TIME_OF_DAY_DEFAULT;
+    //return OW_TIME_OF_DAY_ENCOUNTERS ? GetTimeOfDay() : TIME_OF_DAY_DEFAULT;
+	if (OW_TIME_OF_DAY_ENCOUNTERS)
+	{
+		if (GetTimeOfDay() == TIME_NIGHT)
+			return TIME_NIGHT;
+		else
+			return TIME_DAY;
+	}
+	else
+		return TIME_OF_DAY_DEFAULT;
 }
 
 void RtcInitLocalTimeOffset(s32 hour, s32 minute)
@@ -458,10 +467,10 @@ enum Weekday GetDayOfWeek(void)
 
 enum TimeOfDay TryIncrementTimeOfDay(enum TimeOfDay timeOfDay)
 {
-    return timeOfDay == TIME_NIGHT ? TIME_MORNING : timeOfDay + 1;
+    return timeOfDay == TIME_NIGHT ? TIME_DAY : TIME_NIGHT;
 }
 
 enum TimeOfDay TryDecrementTimeOfDay(enum TimeOfDay timeOfDay)
 {
-    return timeOfDay == TIME_MORNING ? TIME_NIGHT : timeOfDay - 1;
+    return timeOfDay == TIME_DAY ? TIME_NIGHT : TIME_DAY;
 }

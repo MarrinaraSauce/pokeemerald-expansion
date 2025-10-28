@@ -26,7 +26,7 @@ fieldStrings = []
 # time of day encounter data
 TIME_DEFAULT       = ""
 TIME_DEFAULT_LABEL = "TIME_OF_DAY_DEFAULT"
-TIME_DEFAULT_INDEX = 0
+TIME_DEFAULT_INDEX = 1
 TIMES_OF_DAY_COUNT = TIME_DEFAULT_INDEX + 1
 
 # struct building blocks
