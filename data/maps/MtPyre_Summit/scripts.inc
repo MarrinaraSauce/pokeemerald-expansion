@@ -57,9 +57,10 @@ MtPyre_Summit_EventScript_TeamAquaExits::
 	call_if_eq VAR_0x8008, 1, MtPyre_Summit_EventScript_OldLadyApproachPlayer1
 	call_if_eq VAR_0x8008, 2, MtPyre_Summit_EventScript_OldLadyApproachPlayer2
 	msgbox MtPyre_Summit_Text_BothOrbsTakenMagmaLeftThis, MSGBOX_DEFAULT
-	giveitem ITEM_MAGMA_EMBLEM
-	setflag FLAG_RECEIVED_RED_OR_BLUE_ORB
-	setflag FLAG_HIDE_JAGGED_PASS_MAGMA_GUARD
+	@giveitem ITEM_MAGMA_EMBLEM
+	@setflag FLAG_RECEIVED_RED_OR_BLUE_ORB
+	@setflag FLAG_HIDE_JAGGED_PASS_MAGMA_GUARD
+	setvar VAR_SEVII_ORB_QUEST_STATE 1
 	releaseall
 	end
 
@@ -484,37 +485,39 @@ MtPyre_Summit_Text_Grunt4PostBattle:
 MtPyre_Summit_Text_ArchieWeGotTheOrbLetsGo:
 	.string "ARCHIE: TEAM MAGMA's MAXIE got ahead\n"
 	.string "of us, but we also got what we wanted.\p"
-	.string "The RED ORB preserved at MT. PYRE…\n"
+	.string "The map to the RED ORB…\n"
 	.string "I, ARCHIE, now have it in my possession!\p"
 	.string "Fufufu… Now we can bring our ultimate\n"
 	.string "objective to fruition!\p"
 	.string "Okay, TEAM!\n"
-	.string "We're pulling out!$"
+	.string "We're heading to MT. EMBER!$"
 
 MtPyre_Summit_Text_BothOrbsTakenMagmaLeftThis:
 	.string "Oh, no…\n"
 	.string "This cannot happen…\p"
 	.string "Not only the BLUE ORB, but even\n"
-	.string "the RED ORB has been taken…\p"
-	.string "The BLUE ORB and RED ORB must never\n"
-	.string "be separated. They belong together.\p"
+	.string "the RED ORB will be taken…\p"
+	.string "My family has kept the locations of\n"
+	.string "the ORBS secret for centuries.\p"
+	.string "They sleep in the SEVII ISLANDS\n"
+	.string "and must never be awoken.\p"
 	.string "What are those men trying to do with\n"
 	.string "the two ORBS?\p"
 	.string "… … … … … …\n"
 	.string "… … … … … …\p"
-	.string "Oh, yes. Was it TEAM MAGMA who came\n"
-	.string "and took the BLUE ORB first?\p"
-	.string "Well, in their haste, they left this\n"
-	.string "behind.\p"
-	.string "I couldn't imagine what exactly it\n"
-	.string "could be.\p"
-	.string "I would like you to have it.\n"
-	.string "Perhaps it will be useful in some way.$"
+	.string "Oh, yes. TEAM MAGMA came and\n"
+	.string "took the map to the BLUE ORB first.\p"
+	.string "They also set out for the\n"
+	.string "SEVII ISLANDS, but didn't mention where.\p"
+	.string "Truth be told, I could never read\n"
+	.string "those maps myself.\p"
+	.string "But that TEAM AQUA fellow seemed to\n"
+	.string "think that the RED ORB is at MT. EMBER.$"
 
 MtPyre_Summit_Text_OrbsHaveBeenTaken:
-	.string "The BLUE ORB and RED ORB taken by\n"
+	.string "The maps to the ORBS taken by\n"
 	.string "those sinister men…\p"
-	.string "They must never be apart…\n"
+	.string "They must never be awoken…\n"
 	.string "I fear something terrible will happen…$"
 
 MtPyre_Summit_Text_GroudonKyogreAwakened:

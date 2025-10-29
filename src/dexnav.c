@@ -2036,12 +2036,12 @@ static void DrawSpeciesIcons(void)
         species = sDexNavUiDataPtr->hiddenSpecies[i];
         x = ROW_HIDDEN_ICON_X + 24 * i;
         y = ROW_HIDDEN_ICON_Y;
-        if (FlagGet(DN_FLAG_DETECTOR_MODE))
+        if (FlagGet(DN_FLAG_HIDDEN_MONS_UNLOCK))
             TryDrawIconInSlot(species, x, y);
-       else if (species == SPECIES_NONE || species > NUM_SPECIES)
-            CreateNoDataIcon(x, y);
-        else
-            CreateMonIcon(SPECIES_NONE, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF); //question mark if detector mode inactive
+        //else if (species == SPECIES_NONE || species > NUM_SPECIES)
+        //    CreateNoDataIcon(x, y);
+        //else
+        //    CreateMonIcon(SPECIES_NONE, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF); //question mark if detector mode inactive
     }
 }
 
@@ -2548,7 +2548,7 @@ bool8 TryFindHiddenPokemon(void)
         {
         case 0: // land
             // there are surely better ways to do this, but this allows greatest flexibility
-            if (Random() % 100 < HIDDEN_MON_PROBABILTY)
+            if (Random() % 100 < HIDDEN_MON_PROBABILTY && DN_FLAG_HIDDEN_MONS_UNLOCK)
             {
                 index = ChooseHiddenMonIndex();
                 if (index == 0xFF)
@@ -2566,7 +2566,7 @@ bool8 TryFindHiddenPokemon(void)
         case 1: // water
             if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
             {
-                if (Random() % 100 < HIDDEN_MON_PROBABILTY)
+                if (Random() % 100 < HIDDEN_MON_PROBABILTY && DN_FLAG_HIDDEN_MONS_UNLOCK)
                 {
                     index = ChooseHiddenMonIndex();
                     if (index == 0xFF)

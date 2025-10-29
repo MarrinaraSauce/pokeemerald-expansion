@@ -37,6 +37,7 @@ LittlerootTown_MapScripts::
 LittlerootTown_OnTransition:
 	setflag FLAG_VISITED_LITTLEROOT_TOWN
 	setflag FLAG_SYS_B_DASH
+	setflag DN_FLAG_DETECTOR_MODE
 	call Common_EventScript_SetupRivalGfxId
 	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_EventScript_MoveMomToMaysDoor
 	call_if_unset FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_SetTwinPos
@@ -939,7 +940,7 @@ LittlerootTown_Text_ExplainRunningShoes:
 	.string "instructions.\p"
 	.string "“Select DEXNAV from the menu, then\n"
 	.string "select a POKéMON to search for!\p"
-	.string "“Hold A to sneak then approach,\n"
+	.string "“Hold A to sneak, then approach\n"
 	.string "the POKéMON!”$"
 
 LittlerootTown_Text_ComeHomeIfAnythingHappens:

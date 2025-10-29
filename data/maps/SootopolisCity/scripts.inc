@@ -569,7 +569,7 @@ SootopolisCity_EventScript_RayquazaSceneFromDive::
 	fadenewbgm MUS_SURF
 	delay 120
 	clearflag FLAG_HIDE_MAP_NAME_POPUP
-	setflag DN_FLAG_DETECTOR_MODE
+	setflag DN_FLAG_HIDDEN_MONS_UNLOCK
 	warpwhitefade MAP_SOOTOPOLIS_CITY, 29, 53
 	waitstate
 	end

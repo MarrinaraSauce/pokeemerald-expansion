@@ -301,6 +301,7 @@ static void FindMapsWithMon(u16 species)
 {
     u16 i;
     struct Roamer *roamer;
+	u8 temptime;
 
     sPokedexAreaScreen->alteringCaveCounter = 0;
     sPokedexAreaScreen->alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
@@ -342,7 +343,13 @@ static void FindMapsWithMon(u16 species)
     // Add regular species to the area map
     for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED); i++)
     {
-        if (MapHasSpecies(&gWildMonHeaders[i].encounterTypes[gAreaTimeOfDay], species))
+		if (gWildMonHeaders[i].encounterTypes[gAreaTimeOfDay].landMonsInfo == NULL
+		 && gWildMonHeaders[i].encounterTypes[gAreaTimeOfDay].waterMonsInfo == NULL)
+			temptime = OW_TIME_OF_DAY_FALLBACK;
+		else
+			temptime = gAreaTimeOfDay;
+
+        if (MapHasSpecies(&gWildMonHeaders[i].encounterTypes[temptime], species))
         {
             switch (gWildMonHeaders[i].mapGroup)
             {
@@ -447,11 +454,11 @@ static bool8 MapHasSpecies(const struct WildEncounterTypes *info, u16 species)
         return TRUE;
 // When searching the fishing encounters, this incorrectly uses the size of the land encounters.
 // As a result it's reading out of bounds of the fishing encounters tables.
-#ifdef BUGFIX
+//#ifdef BUGFIX
     if (MonListHasSpecies(info->fishingMonsInfo, species, FISH_WILD_COUNT))
-#else
-    if (MonListHasSpecies(info->fishingMonsInfo, species, LAND_WILD_COUNT))
-#endif
+//#else
+//    if (MonListHasSpecies(info->fishingMonsInfo, species, LAND_WILD_COUNT))
+//#endif
         return TRUE;
     if (MonListHasSpecies(info->rockSmashMonsInfo, species, ROCK_WILD_COUNT))
         return TRUE;
