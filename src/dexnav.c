@@ -165,6 +165,7 @@ static void DrawHiddenSearchWindow(u8 width);
 // gui image data
 static const u32 sDexNavGuiTiles[] = INCBIN_U32("graphics/dexnav/gui_tiles.4bpp.smol");
 static const u32 sDexNavGuiTilemap[] = INCBIN_U32("graphics/dexnav/gui_tilemap.bin.smolTM");
+static const u32 sDexNavGuiTilemapNoHidden[] = INCBIN_U32("graphics/dexnav/gui_tilemap_no_hidden.bin.smolTM");
 static const u32 sDexNavGuiPal[] = INCBIN_U32("graphics/dexnav/gui.gbapal");
 
 static const u32 sSelectionCursorGfx[] = INCBIN_U32("graphics/dexnav/cursor.4bpp.smol");
@@ -1655,7 +1656,11 @@ static bool8 DexNav_LoadGraphics(void)
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            DecompressDataWithHeaderWram(sDexNavGuiTilemap, sBg1TilemapBuffer);
+			if(FlagGet(DN_FLAG_HIDDEN_MONS_UNLOCK))
+				DecompressDataWithHeaderWram(sDexNavGuiTilemap, sBg1TilemapBuffer);
+			else
+				DecompressDataWithHeaderWram(sDexNavGuiTilemapNoHidden, sBg1TilemapBuffer);
+
             sDexNavUiDataPtr->state++;
         }
         break;
@@ -2379,9 +2384,14 @@ static void Task_DexNavMain(u8 taskId)
     {
         if (sDexNavUiDataPtr->cursorRow == ROW_WATER)
         {
-            sDexNavUiDataPtr->cursorRow = ROW_HIDDEN;
-            if (sDexNavUiDataPtr->cursorCol >= COL_HIDDEN_COUNT)
-                sDexNavUiDataPtr->cursorCol = COL_HIDDEN_MAX;
+			if (FlagGet(DN_FLAG_HIDDEN_MONS_UNLOCK))
+			{
+				sDexNavUiDataPtr->cursorRow = ROW_HIDDEN;
+				if (sDexNavUiDataPtr->cursorCol >= COL_HIDDEN_COUNT)
+				    sDexNavUiDataPtr->cursorCol = COL_HIDDEN_MAX;
+			}
+			else
+				sDexNavUiDataPtr->cursorRow = ROW_LAND_BOT;
         }
         else
         {
@@ -2396,8 +2406,12 @@ static void Task_DexNavMain(u8 taskId)
     }
     else if (JOY_NEW(DPAD_DOWN))
     {
-        if (sDexNavUiDataPtr->cursorRow == ROW_HIDDEN)
+        if (sDexNavUiDataPtr->cursorRow == ROW_HIDDEN
+		 || (sDexNavUiDataPtr->cursorRow == ROW_LAND_BOT && !FlagGet(DN_FLAG_HIDDEN_MONS_UNLOCK)))
         {
+			if (sDexNavUiDataPtr->cursorRow == ROW_LAND_BOT && sDexNavUiDataPtr->cursorCol == COL_LAND_MAX)
+                sDexNavUiDataPtr->cursorCol = COL_WATER_MAX;
+
             sDexNavUiDataPtr->cursorRow = ROW_WATER;
         }
         else if (sDexNavUiDataPtr->cursorRow == ROW_LAND_BOT)

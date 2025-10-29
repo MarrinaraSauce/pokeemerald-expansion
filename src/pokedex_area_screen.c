@@ -462,6 +462,9 @@ static bool8 MapHasSpecies(const struct WildEncounterTypes *info, u16 species)
         return TRUE;
     if (MonListHasSpecies(info->rockSmashMonsInfo, species, ROCK_WILD_COUNT))
         return TRUE;
+    if (MonListHasSpecies(info->hiddenMonsInfo, species, HIDDEN_WILD_COUNT)
+	 && FlagGet(DN_FLAG_HIDDEN_MONS_UNLOCK))
+        return TRUE;
     return FALSE;
 }
 
