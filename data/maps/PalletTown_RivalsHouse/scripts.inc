@@ -1,0 +1,18 @@
+PalletTown_RivalsHouse_MapScripts::
+	.byte 0
+
+PalletTown_RivalsHouse_EventScript_Bookshelf::
+	msgbox PalletTown_RivalsHouse_Text_ShelvesCrammedFullOfBooks, MSGBOX_SIGN
+	end
+
+PalletTown_RivalsHouse_EventScript_Picture::
+	msgbox PalletTown_RivalsHouse_Text_LovelyAndSweetClefairy, MSGBOX_SIGN
+	end
+
+PalletTown_RivalsHouse_Text_ShelvesCrammedFullOfBooks::
+    .string "The shelves are crammed full of\n"
+    .string "books on POKéMON.$"
+
+PalletTown_RivalsHouse_Text_LovelyAndSweetClefairy::
+    .string "…The lovely and sweet\n"
+    .string "CLEFAIRY…$"
