@@ -2067,7 +2067,7 @@ static void CheckPartyIneligibility(void)
             {
                 if (gSpeciesInfo[baseSpecies].isFrontierBanned)
                 {
-                    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(baseSpecies), FLAG_GET_CAUGHT))
+                    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(baseSpecies, TRUE), FLAG_GET_CAUGHT))
                     {
                         caughtBanned[totalCaughtBanned] = baseSpecies;
                         totalCaughtBanned++;

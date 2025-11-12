@@ -119,6 +119,8 @@ static const struct CombinedMove sCombinedMoves[2] =
 
 #define HOENN_TO_NATIONAL(name)     [HOENN_DEX_##name - 1] = NATIONAL_DEX_##name
 
+#define REGIONAL_FORM_DEX_TO_SPECIES(name)     [REGIONAL_FORM_DEX_##name - 1] = SPECIES_##name
+
 // Assigns all Hoenn Dex Indexes to a National Dex Index
 static const enum NationalDexOrder sHoennToNationalOrder[HOENN_DEX_COUNT - 1] =
 {
@@ -360,6 +362,54 @@ static const enum NationalDexOrder sHoennToNationalOrder[HOENN_DEX_COUNT - 1] =
     HOENN_TO_NATIONAL(RAYQUAZA),
     HOENN_TO_NATIONAL(JIRACHI),
     HOENN_TO_NATIONAL(DEOXYS),
+};
+
+static const u16 sRegionalFormDexToSpecies[REGIONAL_FORM_DEX_COUNT] =
+{
+    REGIONAL_FORM_DEX_TO_SPECIES(RATTATA_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(RATICATE_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(RAICHU_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(SANDSHREW_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(SANDSLASH_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(VULPIX_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(NINETALES_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(DIGLETT_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(DUGTRIO_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(MEOWTH_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(MEOWTH_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(PERSIAN_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(GROWLITHE_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(ARCANINE_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(GEODUDE_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(GRAVELER_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(GOLEM_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(PONYTA_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(RAPIDASH_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(SLOWPOKE_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(SLOWBRO_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(SLOWKING_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(FARFETCHD_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(GRIMER_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(MUK_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(VOLTORB_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(ELECTRODE_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(EXEGGUTOR_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(MAROWAK_ALOLA),
+    REGIONAL_FORM_DEX_TO_SPECIES(WEEZING_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(MR_MIME_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(TAUROS_PALDEA_COMBAT),
+    REGIONAL_FORM_DEX_TO_SPECIES(TAUROS_PALDEA_BLAZE),
+    REGIONAL_FORM_DEX_TO_SPECIES(TAUROS_PALDEA_AQUA),
+    REGIONAL_FORM_DEX_TO_SPECIES(ARTICUNO_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(ZAPDOS_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(MOLTRES_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(TYPHLOSION_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(WOOPER_PALDEA),
+    REGIONAL_FORM_DEX_TO_SPECIES(QWILFISH_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(SNEASEL_HISUI),
+    REGIONAL_FORM_DEX_TO_SPECIES(CORSOLA_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(ZIGZAGOON_GALAR),
+    REGIONAL_FORM_DEX_TO_SPECIES(LINOONE_GALAR),
 };
 
 const struct SpindaSpot gSpindaSpotGraphics[] =
@@ -5044,18 +5094,37 @@ enum HoennDexOrder NationalToHoennOrder(enum NationalDexOrder nationalNum)
     return hoennNum + 1;
 }
 
-enum NationalDexOrder SpeciesToNationalPokedexNum(u16 species)
+bool32 IsSpeciesRegionalForm(u32 species)
+{
+    return gSpeciesInfo[species].isAlolanForm
+        || gSpeciesInfo[species].isGalarianForm
+        || gSpeciesInfo[species].isHisuianForm
+        || gSpeciesInfo[species].isPaldeanForm;
+}
+
+enum NationalDexOrder SpeciesToNationalPokedexNum(u16 species, bool8 specifyRegionalForm)
 {
     species = SanitizeSpeciesId(species);
     if (!species)
         return NATIONAL_DEX_NONE;
+
+    if (specifyRegionalForm && IsSpeciesRegionalForm(species))
+    {
+        u8 formIndex;
+
+        for (formIndex = 0; formIndex < REGIONAL_FORM_DEX_COUNT; formIndex++)
+        {
+            if (sRegionalFormDexToSpecies[formIndex] == species)
+                return NATIONAL_DEX_COUNT + formIndex + 1;
+        }
+    }
 
     return gSpeciesInfo[species].natDexNum;
 }
 
 enum HoennDexOrder SpeciesToHoennPokedexNum(u16 species)
 {
-    if (!species)
+    if (!species || IsSpeciesRegionalForm(species))
         return 0;
     return NationalToHoennOrder(gSpeciesInfo[species].natDexNum);
 }
@@ -5793,11 +5862,11 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
     return numMoves;
 }
 
-u16 SpeciesToPokedexNum(u16 species)
+u16 SpeciesToPokedexNum(u16 species, bool8 specifyRegionalForm)
 {
     if (IsNationalPokedexEnabled())
     {
-        return SpeciesToNationalPokedexNum(species);
+        return SpeciesToNationalPokedexNum(species, specifyRegionalForm);
     }
     else
     {
@@ -6389,7 +6458,7 @@ void HandleSetPokedexFlag(enum NationalDexOrder nationalNum, u8 caseId, u32 pers
 void HandleSetPokedexFlagFromMon(struct Pokemon *mon, u32 caseId)
 {
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY);
-    enum NationalDexOrder nationalNum = SpeciesToNationalPokedexNum(GetMonData(mon, MON_DATA_SPECIES));
+    enum NationalDexOrder nationalNum = SpeciesToNationalPokedexNum(GetMonData(mon, MON_DATA_SPECIES), TRUE);
 
     HandleSetPokedexFlag(nationalNum, caseId, personality);
 }
@@ -7142,14 +7211,6 @@ uq4_12_t GetDynamaxLevelHPMultiplier(u32 dynamaxLevel, bool32 inverseMultiplier)
     if (inverseMultiplier)
         return UQ_4_12(1.0/(1.5 + 0.05 * dynamaxLevel));
     return UQ_4_12(1.5 + 0.05 * dynamaxLevel);
-}
-
-bool32 IsSpeciesRegionalForm(u32 species)
-{
-    return gSpeciesInfo[species].isAlolanForm
-        || gSpeciesInfo[species].isGalarianForm
-        || gSpeciesInfo[species].isHisuianForm
-        || gSpeciesInfo[species].isPaldeanForm;
 }
 
 bool32 IsSpeciesRegionalFormFromRegion(u32 species, u32 region)

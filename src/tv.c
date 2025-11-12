@@ -195,32 +195,32 @@ static const struct {
     u8 location;
 } sPokeOutbreakSpeciesList[] = {
     {
-        .species = SPECIES_SEEDOT,
-        .moves = {MOVE_BIDE, MOVE_HARDEN, MOVE_LEECH_SEED},
+        .species = SPECIES_SURSKIT,
+        .moves = {MOVE_WATER_GUN, MOVE_QUICK_ATTACK, MOVE_SWEET_SCENT, MOVE_FLIP_TURN},
         .level = 3,
         .location = MAP_NUM(MAP_ROUTE102)
     },
     {
-        .species = SPECIES_NUZLEAF,
-        .moves = {MOVE_HARDEN, MOVE_GROWTH, MOVE_NATURE_POWER, MOVE_LEECH_SEED},
+        .species = SPECIES_SURSKIT,
+        .moves = {MOVE_WATER_GUN, MOVE_QUICK_ATTACK, MOVE_SWEET_SCENT, MOVE_FLIP_TURN},
         .level = 15,
         .location = MAP_NUM(MAP_ROUTE114),
     },
     {
-        .species = SPECIES_SEEDOT,
-        .moves = {MOVE_HARDEN, MOVE_GROWTH, MOVE_NATURE_POWER, MOVE_LEECH_SEED},
+        .species = SPECIES_SURSKIT,
+        .moves = {MOVE_WATER_GUN, MOVE_QUICK_ATTACK, MOVE_SWEET_SCENT, MOVE_FLIP_TURN},
         .level = 13,
         .location = MAP_NUM(MAP_ROUTE117),
     },
     {
-        .species = SPECIES_SEEDOT,
-        .moves = {MOVE_GIGA_DRAIN, MOVE_FRUSTRATION, MOVE_SOLAR_BEAM, MOVE_LEECH_SEED},
+        .species = SPECIES_SURSKIT,
+        .moves = {MOVE_WATER_GUN, MOVE_QUICK_ATTACK, MOVE_SWEET_SCENT, MOVE_FLIP_TURN},
         .level = 25,
         .location = MAP_NUM(MAP_ROUTE120),
     },
     {
         .species = SPECIES_SKITTY,
-        .moves = {MOVE_GROWL, MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_ATTRACT},
+        .moves = {MOVE_FAKE_OUT, MOVE_TACKLE, MOVE_SING, MOVE_ASSIST},
         .level = 8,
         .location = MAP_NUM(MAP_ROUTE116),
     }
@@ -3058,7 +3058,7 @@ static u16 GetRandomDifferentSpeciesSeenByPlayer(u16 excludedSpecies)
     u16 species = Random() % (NUM_SPECIES - 1) + 1;
     u16 initSpecies = species;
 
-    while (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN) != TRUE || species == excludedSpecies)
+    while (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species, FALSE), FLAG_GET_SEEN) != TRUE || species == excludedSpecies)
     {
         if (species == SPECIES_NONE + 1)
             species = NUM_SPECIES - 1;
@@ -3757,7 +3757,7 @@ static void DeactivateShow(u8 showIdx)
 
 static void DeactivateShowIfNotSeenSpecies(u16 species, u8 showIdx)
 {
-    if (!GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN))
+    if (!GetSetPokedexFlag(SpeciesToNationalPokedexNum(species, FALSE), FLAG_GET_SEEN))
         gSaveBlock1Ptr->tvShows[showIdx].common.active = FALSE;
 }
 

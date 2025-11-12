@@ -1122,7 +1122,7 @@ static void HallOfFame_PrintMonInfo(struct HallofFameMon *currMon, u8 unused1, u
     if (currMon->species != SPECIES_EGG)
     {
         stringPtr = StringCopy(text, gText_Number);
-        dexNumber = SpeciesToPokedexNum(currMon->species);
+        dexNumber = SpeciesToPokedexNum(currMon->species, FALSE);
         if (dexNumber != 0xFFFF)
         {
             if (IsNationalPokedexEnabled())

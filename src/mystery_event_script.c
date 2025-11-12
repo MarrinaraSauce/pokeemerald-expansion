@@ -340,7 +340,7 @@ bool8 MEScrCmd_givepokemon(struct ScriptContext *ctx)
 
         if (species != SPECIES_EGG)
         {
-            enum NationalDexOrder pokedexNum = SpeciesToNationalPokedexNum(species);
+            enum NationalDexOrder pokedexNum = SpeciesToNationalPokedexNum(species, TRUE);
             GetSetPokedexFlag(pokedexNum, FLAG_SET_SEEN);
             GetSetPokedexFlag(pokedexNum, FLAG_SET_CAUGHT);
         }

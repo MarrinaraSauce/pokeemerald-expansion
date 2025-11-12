@@ -244,7 +244,7 @@ void LoadTypeIcons(u32 battler)
     u32 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
 
     if (B_SHOW_TYPES == SHOW_TYPES_NEVER 
-        || (B_SHOW_TYPES == SHOW_TYPES_SEEN && !GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN)))
+        || (B_SHOW_TYPES == SHOW_TYPES_SEEN && !GetSetPokedexFlag(SpeciesToNationalPokedexNum(species, TRUE), FLAG_GET_SEEN)))
         return;
 
     LoadTypeSpritesAndPalettes();
@@ -321,7 +321,7 @@ static bool32 ShouldHideUncaughtType(u32 species)
     if (B_SHOW_TYPES != SHOW_TYPES_CAUGHT)
         return FALSE;
 
-    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
+    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species, TRUE), FLAG_GET_CAUGHT))
         return FALSE;
 
     return TRUE;
@@ -332,7 +332,7 @@ static bool32 ShouldHideUnseenType(u32 species)
     if (B_SHOW_TYPES != SHOW_TYPES_SEEN)
         return FALSE;
 
-    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN))
+    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species, TRUE), FLAG_GET_SEEN))
         return FALSE;
 
     return TRUE;
